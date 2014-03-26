@@ -22,6 +22,8 @@ app.invite(function(req, res) {
         message: {
             headers:{
                 'content-type': 'application/sdp'
+                ,from: '1234'
+                ,'p-asserted-identity': 'sip:1234@localhost'
             }
             ,body: req.body            
         }
@@ -44,7 +46,7 @@ app.invite(function(req, res) {
 app.on('sipdialog:create', function(e) {
     var dialog = e.target ;
     e.session[ (dialog.role === SipDialog.UAC ? 'uacLeg' : 'uasLeg')] = dialog ;
- )
+ })
 .on('sipdialog:terminate', function(e) {
     e.session.uacLeg && e.session.uacLeg.terminate() ;
     e.session.uasLeg && e.session.uasLeg.terminate() ;
