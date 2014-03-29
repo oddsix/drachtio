@@ -1,7 +1,7 @@
 var drachtio = require('../..') ;
 var app = drachtio() ;
 
-app.connect({host:'localhost', port: 8022, secret: 'cymru'}) ;
+app.connect({host:'10.228.9.22', port: 8022, secret: 'cymru'}) ;
 
 app.use( app.router ) ;
 

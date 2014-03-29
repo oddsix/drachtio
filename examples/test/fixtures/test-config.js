@@ -1,5 +1,5 @@
 module.exports = {
-	host: '192.168.173.1'
-	,port: 8023
+	host: 'localhost'
+	,port: 8022
 	,secret: 'cymru'
 } ;

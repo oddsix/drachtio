@@ -5,7 +5,7 @@ var drachtio = require('../..')
 ,debug = require('debug')('drachtio:uas-delay-answer') ;
 
 app.connect({
-    host: 'localhost'
+    host: '10.228.9.22'
     ,port: 8022
     ,secret: 'cymru'
 }) ;
@@ -25,10 +25,7 @@ app.invite(function(req, res) {
     req.session.save() ;
 
     res.send(200, {
-        headers: {
-            'content-type': 'application/sdp'
-        }
-        ,body: d.dummySdp
+        body: d.dummySdp
     }) ;
 
     req.cancel( function( req, res ){
