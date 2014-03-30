@@ -6,6 +6,7 @@
   ,"main": "./lib/drachtio.js"
   ,"dependencies": { 
     "debug": "*" 
+    ,"utils-merge":"*"
     ,"underscore": "*"
     ,"json-socket": "*"
     ,"node-uuid": ">=1.4.1"
