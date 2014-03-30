@@ -14,7 +14,8 @@
     ,"crc": ">=0.2.1"
   }
   ,"devDependencies": {
-    "drachtio-redis": ">=1.0.3"
+    "drachtio-session": "*"
+    ,"drachtio-redis": ">=1.0.3"
     ,"jsdoc": ">=3.3.0-*"
   },
   "engines": { "node": ">=0.10" }
