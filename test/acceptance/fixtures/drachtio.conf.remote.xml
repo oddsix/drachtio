@@ -1,0 +1,35 @@
+<drachtio>
+
+    <!-- udp port to listen on for client connections (default 8022), and shared secret used to authenticate clients -->
+        <admin port="8023" secret="cymru">localhost</admin>
+  
+    <!-- sip configuration -->
+    <sip>
+        <!-- local sip address to bind to.  Default: 'sip:*', which means listens on port 5060 on all interfaces and transports -->
+        <!--
+                Other examples:
+                    sip:192.168.1.100       -- listen on a specific address
+                    sip:*;transport=tcp     -- tcp connections only
+                    sip:*:5061              -- listen on port 5061
+        -->
+        <contact>sip:*:5061</contact>
+    </sip>
+
+    <!-- logging configuration -->
+    <logging>
+
+        <!-- all logging is done via syslog.  Logging can be sent to local host or remote, depending on configuration below -->
+        <syslog>
+            <address>localhost</address>
+            <port>514</port>
+            <facility>local6</facility>
+        </syslog>
+
+        <!-- sofia internal log level, from 0 (minimal) to 9 (verbose) -->
+        <sofia-loglevel>9</sofia-loglevel>
+        
+        <!-- notice, warning, error, info, debug.  Default: info -->
+        <loglevel>debug</loglevel>
+    </logging>
+        
+</drachtio>

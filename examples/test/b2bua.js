@@ -1,53 +1,71 @@
 var drachtio = require('../..')
 ,app = drachtio()
 ,siprequest = app.uac
-,RedisStore = require('drachtio-redis')(drachtio) 
-,d = require('../fixtures/data')
-,SipDialog = drachtio.SipDialog 
+,RedisStore = require('drachtio-redis')() 
+,session = require('drachtio-session')
+,argv = require('minimist')(process.argv.slice(2))
 ,debug = require('debug')('drachtio:b2bua') ;
 
+if( !argv.host ) return usage() ;
+
 app.connect({
-    host: 'localhost'
-    ,port: 8022
-    ,secret: 'cymru'
+    host: argv.host
+    ,port: argv.port || 8022
+    ,secret: argv.secret || 'cymru'
 }) ;
 
-app.use( drachtio.session({store: new RedisStore({host: 'localhost', prefix:''})})) ;
-app.use( drachtio.dialog() ) ;
-app.use( app.router ) ;
+var sessionStore = new RedisStore({host: 'localhost'}) ;
+app.use(session({store: sessionStore})) ;
 
 app.invite(function(req, res) {
 
+    req.session.uasCallId = req.get('call-id') ;
+
     siprequest( 'sip:msml@209.251.49.158', {
-        message: {
-            headers:{
-                'content-type': 'application/sdp'
-                ,from: '1234'
-                ,'p-asserted-identity': 'sip:1234@localhost'
-            }
-            ,body: req.body            
+        headers:{
+            from: '1234'
+            ,'p-asserted-identity': 'sip:1234@localhost'
         }
+        ,body: req.body            
         ,session: req.session
-    }, function( err, invite, uacRes ) {
+    }, function( err, uacReq, uacRes ) {
         if( err ) throw( err ) ;
 
-        if( uacRes.statusCode >= 200 ) uacRes.ack() ;
-
-        var headers = {} ;
-        if( uacRes.statusCode === 200 ) headers['content-type'] = uacRes.get('content-type').type ;
-        
+        if( uacRes.statusCode >= 200 ) {
+            uacRes.ack() ;
+            req.session.uacCallId = uacReq.get('call-id') ;
+            uacReq.session.myCallId = uacReq.get('call-id') ;
+            debug('uac session is: ', uacReq.session) ;
+         }
         res.send( uacRes.statusCode, {
-            headers: headers
-            ,body: uacRes.body
+            body: uacRes.body
         }) ;
     }) ;
 }) ;
-
-app.on('sipdialog:create', function(e) {
-    var dialog = e.target ;
-    e.session[ (dialog.role === SipDialog.UAC ? 'uacLeg' : 'uasLeg')] = dialog ;
- })
-.on('sipdialog:terminate', function(e) {
-    e.session.uacLeg && e.session.uacLeg.terminate() ;
-    e.session.uasLeg && e.session.uasLeg.terminate() ;
+app.ack( function( req, res ) {
+    debug('received ACK, dialogId: %s', req.dialogId) ;
 }) ;
+app.bye( function( req, res) {
+    res.send(200) ;
+    debug('got bye session is ', req.session) ;
+    if( req.get('call-id') === req.session.uasCallId ) {
+        debug('caller hung up') ;
+        siprequest.bye({
+            headers:{
+                'call-id': req.session.uacCallId
+            }
+        }) ;
+    }
+    else {
+       debug('called party hung up') ;
+        siprequest.bye({
+            headers:{
+                'call-id': req.session.uasCallId
+            }
+        }) ;        
+    }
+}) ;
+
+function usage() {
+    console.log('usage: node ' + process.argv[1] + ' --host {dractio-server-host}') ;
+}

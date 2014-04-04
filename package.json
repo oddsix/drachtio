@@ -1,7 +1,7 @@
 {
   "name": "drachtio"
   ,"description": "express-style middleware for SIP telephony applications (http://www.ietf.org/rfc/rfc3261.txt)"
-  ,"version": "0.0.4"
+  ,"version": "0.0.1"
   ,"author": "Dave Horton <dave@dchorton.com>"
   ,"main": "./lib/drachtio.js"
   ,"dependencies": { 
@@ -17,7 +17,13 @@
     "drachtio-session": "*"
     ,"drachtio-redis": ">=1.0.3"
     ,"jsdoc": ">=3.3.0-*"
-  },
+    ,"minimist": ">=0.0.8"
+    ,"mocha": "~1.15.1"
+    ,"should": "~2.1.1"
+ },
+  "scripts": {
+    "test": "make test"
+  }, 
   "engines": { "node": ">=0.10" }
   ,"license": "MIT"
   ,"repository": {
