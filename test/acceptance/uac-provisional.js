@@ -48,11 +48,14 @@ describe('100rel', function() {
             res.should.have.property('body') ;
             res.headers['content-type'].should.have.property('type','application/sdp') ;
             res.headers.should.have.property('content-length') ;
-            appRemote.ack(function(){
-                appLocal.idle.should.be.true ;
-                appRemote.idle.should.be.true ;
-                done() ;            
-            }) ;
+            appRemote.ack(function() {
+
+                siprequest.bye({headers:{'call-id': res.get('call-id')}}, function(){
+                    appLocal.idle.should.be.true ;
+                    appRemote.idle.should.be.true ;
+                    done() ;            
+               }) ;
+             }) ;
         }) ;
     }) ;
 }) ;
