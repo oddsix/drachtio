@@ -26,12 +26,15 @@ describe('reject invites', function() {
                 }) ;
             });        
             appRemote.ack(function(){
-                appLocal.idle.should.be.true ;
-                appRemote.idle.should.be.true ;
+                setTimeout( function() {
+                    appLocal.idle.should.be.true ;
+                    appRemote.idle.should.be.true ;
 
-                appLocal.disconnect() ;
-                appRemote.disconnect() ;
-                done() ;            
+                    appLocal.disconnect() ;
+                    appRemote.disconnect() ;
+                    done() ;            
+                        
+                }, 500) ;
             }) ;
         }) ;
      }) ;
@@ -53,12 +56,15 @@ describe('reject invites', function() {
                 }) ;
             });        
             appRemote.ack(function(){
-                appLocal.idle.should.be.true ;
-                appRemote.idle.should.be.true ;
+                setTimeout( function() {
+                    appLocal.idle.should.be.true ;
+                    appRemote.idle.should.be.true ;
 
-                appLocal.disconnect() ;
-                appRemote.disconnect() ;
-                done() ;            
+                    appLocal.disconnect() ;
+                    appRemote.disconnect() ;
+                    done() ;            
+                        
+                }, 500) ;
             }) ;
         }) ;
      }) ;
