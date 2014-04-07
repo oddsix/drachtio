@@ -29,7 +29,7 @@ describe('custom-headers', function() {
         done() ;
     }) ;
  
-    it('should be able to set a new header', function(done) {
+    it('must be able to set a new header', function(done) {
         siprequest.options(config.request_uri, function( err, req, res ) {
             should.not.exist(err) ;
             res.should.have.property('statusCode',200); 
@@ -40,7 +40,7 @@ describe('custom-headers', function() {
         }) ;
     }) ;
 
-    it('should be able to set a well-known header', function(done) {
+    it('must be able to set a well-known header', function(done) {
         siprequest.message(config.request_uri, function( err, req, res ) {
             should.not.exist(err) ;
             res.should.have.property('statusCode',200); 

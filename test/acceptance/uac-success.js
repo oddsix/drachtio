@@ -8,10 +8,10 @@ var appRemote
 ,appRemote
 ,siprequest ;
 
-describe('uac connects ok', function() {
+describe('uac successful dialog establishment', function() {
 
     before(function(done){
-       appRemote = require('../../examples/uac/app') ;
+       appRemote = require('../../examples/uac-success/app') ;
         appRemote.on('connect', function() {
             appLocal = require('../..')() ;
             siprequest = appLocal.uac ;
@@ -27,14 +27,18 @@ describe('uac connects ok', function() {
         done() ;
     }) ;
 
-    it('should receive 200 OK', function(done) {
+    it('must be able to establish a SIP dialog', function(done) {
         this.timeout(3000) ;
         siprequest(config.request_uri, {
             body: config.sdp
         }, function( err, req, res ) {
+            res.ack() ;
+
             should.not.exist(err) ;
             res.should.have.property('statusCode',200); 
             res.should.have.property('body') ;
+            res.headers['content-type'].should.have.property('type','application/sdp') ;
+            res.headers.should.have.property('content-length') ;
             appLocal.idle.should.be.true ;
             appRemote.idle.should.be.true ;
             done() ;
