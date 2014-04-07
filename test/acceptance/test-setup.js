@@ -16,6 +16,6 @@ after( function(done) {
     remoteServer.kill() ;
     setTimeout(function(){
         done();
-    }, 1000) ;
+    }, 500) ;
 }) ;
 
