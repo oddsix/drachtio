@@ -17,6 +17,6 @@ after( function(done) {
         localServer.kill() ;
         remoteServer.kill() ;
         done() ;
-    }, 500) ;
+    }, 1000) ;
 }) ;
 
