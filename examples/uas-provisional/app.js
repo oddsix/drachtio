@@ -18,7 +18,3 @@ app.invite(function(req, res) {
 		res.send( 200, {body: config.sdp,headers:{'subject': 'help!'}} ) ;
 	}) ;
 }) ;
-
-app.ack(function(){
-	app.disconnect() ;
-})
