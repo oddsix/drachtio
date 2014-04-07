@@ -11,7 +11,7 @@ var appRemote
 describe('uac cancel INVITE', function() {
 
     before(function(done){
-       appRemote = require('../../examples/uac-cancel/app') ;
+       appRemote = require('../../examples/uas-cancel/app') ;
         appRemote.on('connect', function() {
             appLocal = require('../..')() ;
             siprequest = appLocal.uac ;

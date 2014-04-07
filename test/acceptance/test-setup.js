@@ -14,6 +14,8 @@ before( function(done){
 after( function(done) {
     localServer.kill() ;
     remoteServer.kill() ;
-    done() ;
+    setTimeout(function(){
+        done();
+    }, 1000) ;
 }) ;
 

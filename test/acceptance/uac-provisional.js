@@ -8,10 +8,10 @@ var appRemote
 ,appRemote
 ,siprequest ;
 
-describe('uac successful dialog establishment', function() {
-    this.timeout(4000) ;
+describe('provisional responses', function() {
+
     before(function(done){
-       appRemote = require('../../examples/uas-success/app') ;
+       appRemote = require('../../examples/uas-provisional/app') ;
         appRemote.on('connect', function() {
             appLocal = require('../..')() ;
             siprequest = appLocal.uac ;
@@ -23,25 +23,33 @@ describe('uac successful dialog establishment', function() {
     }) ;
     after(function(done){
         appLocal.disconnect() ;
-        appRemote.disconnect() ;
         done() ;
     }) ;
 
-    it('must be able to establish a SIP dialog', function(done) {
+    it('must be able to support reliable provisional responses', function(done) {
         this.timeout(3000) ;
+        var i = 0 ;
         siprequest(config.request_uri, {
-            body: config.sdp
+            headers: {
+                require:'100rel'
+                ,supported: '100rel'
+            }
+            ,body: config.sdp
         }, function( err, req, res ) {
+            should.not.exist(err) ;
+            res.should.have.property('statusCode',i++ === 0 ? 183 : 200 ); 
+            if( res.statusCode === 183 ) return ;
             res.ack() ;
 
-            should.not.exist(err) ;
-            res.should.have.property('statusCode',200); 
             res.should.have.property('body') ;
             res.headers['content-type'].should.have.property('type','application/sdp') ;
             res.headers.should.have.property('content-length') ;
-            appLocal.idle.should.be.true ;
-            appRemote.idle.should.be.true ;
-            done() ;
+
+            appRemote.on('disconnect', function(){
+                appLocal.idle.should.be.true ;
+                appRemote.idle.should.be.true ;
+                done() ;            
+            }) ;
         }) ;
     }) ;
 }) ;
