@@ -12,10 +12,11 @@ before( function(done){
 }) ;
 
 after( function(done) {
-    localServer.kill() ;
-    remoteServer.kill() ;
-    setTimeout(function(){
-        done();
+    this.timeout(35000) ;
+    setTimeout( function() {
+        localServer.kill() ;
+        remoteServer.kill() ;
+        done() ;
     }, 500) ;
 }) ;
 
