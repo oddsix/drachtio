@@ -9,7 +9,7 @@ var appRemote
 
 describe('reject invites', function() {
 
-    it('must allow custom status phrases', function(done) {
+    it('must be able to reject with custom status phrases', function(done) {
 
        appRemote = require('../../examples/uas-reject-with-custom-status/app') ;
         appRemote.on('connect', function() {
@@ -39,7 +39,7 @@ describe('reject invites', function() {
         }) ;
      }) ;
 
-   it('must insert default status phrase', function(done) {
+   it('must be able to reject with default status phrase', function(done) {
 
        appRemote = require('../../examples/uas-reject-with-default-status/app') ;
         appRemote.on('connect', function() {

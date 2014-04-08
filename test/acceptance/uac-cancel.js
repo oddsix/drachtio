@@ -8,7 +8,7 @@ var appRemote
 ,appRemote
 ,siprequest ;
 
-describe('uac cancel INVITE', function() {
+describe('cancel invites', function() {
 
     before(function(done){
        appRemote = require('../../examples/uas-cancel/app') ;

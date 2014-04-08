@@ -9,7 +9,7 @@ var appRemote
 ,siprequest ;
 
 
-describe('custom-headers', function() {
+describe('custom headers', function() {
     this.timeout(3000) ;
 
     before(function(done){

@@ -28,7 +28,7 @@ describe('delayed sdp offer', function() {
         done() ;
     }) ;
 
-    it('must be able to delay sending sdp offer until ACK', function(done) {
+    it('must be able to provide sdp offer in ack instead of invite', function(done) {
         this.timeout(5000) ;
         var sdpOffer ;
         async.parallel([

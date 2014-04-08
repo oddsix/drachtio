@@ -9,7 +9,7 @@ var appRemote
 ,appRemote
 ,siprequest ;
 
-describe('uac successful dialog establishment', function() {
+describe('accept invites', function() {
     this.timeout(4000) ;
     before(function(done){
        appRemote = require('../../examples/uas-success/app') ;
@@ -28,7 +28,7 @@ describe('uac successful dialog establishment', function() {
         done() ;
     }) ;
 
-    it('must be able to establish a SIP dialog', function(done) {
+    it('must be able to connect simple uac - uas call', function(done) {
         this.timeout(5000) ;
         async.parallel([
             function local( callback ){ 
