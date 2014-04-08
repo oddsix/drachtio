@@ -14,9 +14,7 @@
     ,"crc": ">=0.2.1"
   }
   ,"devDependencies": {
-    "drachtio-session": "*"
-    ,"drachtio-redis": ">=1.0.3"
-    ,"jsdoc": ">=3.3.0-*"
+    "jsdoc": ">=3.3.0-*"
     ,"minimist": ">=0.0.8"
     ,"mocha": "~1.15.1"
     ,"should": "~2.1.1"
