@@ -47,6 +47,6 @@ describe('uac cancel INVITE', function() {
 
         setTimeout( function() {
             r.cancel() ;
-        }, 500) ;
+        }, 200) ;
     }) ;
 }) ;

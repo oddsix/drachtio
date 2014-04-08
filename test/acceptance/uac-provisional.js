@@ -56,7 +56,7 @@ describe('100rel', function() {
                         siprequest.bye({headers:{'call-id': res.get('call-id')}}, function() {
                             callback() ;
                         }) ;                       
-                    }, 500);
+                    }, 100);
                  }) ;
  
             }

@@ -33,8 +33,8 @@ describe('reject invites', function() {
                     appLocal.disconnect() ;
                     appRemote.disconnect() ;
                     done() ;            
-                        
-                }, 500) ;
+
+                }, 100) ;
             }) ;
         }) ;
      }) ;
@@ -64,7 +64,7 @@ describe('reject invites', function() {
                     appRemote.disconnect() ;
                     done() ;            
                         
-                }, 500) ;
+                }, 100) ;
             }) ;
         }) ;
      }) ;
