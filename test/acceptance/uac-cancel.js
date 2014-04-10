@@ -5,8 +5,7 @@ var appRemote
 ,should = require('should')
 ,config = require('./fixtures/config')
 ,appLocal
-,appRemote
-,siprequest ;
+,appRemote;
 
 describe('cancel invites', function() {
 
@@ -14,8 +13,6 @@ describe('cancel invites', function() {
        appRemote = require('../../examples/uas-cancel/app') ;
         appRemote.on('connect', function() {
             appLocal = require('../..')() ;
-            siprequest = appLocal.uac ;
-
             appLocal.connect(config.connect_opts, function(err){
                 done() ;
             });        
@@ -30,7 +27,7 @@ describe('cancel invites', function() {
     it('must be able to cancel an INVITE', function(done) {
         this.timeout(5000) ;
         var i = 0 ;
-        var r = siprequest(config.request_uri, {
+        var r = appLocal.siprequest(config.request_uri, {
             body: config.sdp
         }, function( err, req, res ) {
             should.not.exist(err) ;

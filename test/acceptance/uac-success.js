@@ -15,8 +15,7 @@ describe('accept invites', function() {
        appRemote = require('../../examples/uas-success/app') ;
         appRemote.on('connect', function() {
             appLocal = require('../..')() ;
-            siprequest = appLocal.uac ;
-
+            siprequest = appLocal.siprequest
             appLocal.connect(config.connect_opts, function(err){
                 done() ;
             });        

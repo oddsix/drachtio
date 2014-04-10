@@ -5,8 +5,7 @@ var appRemote
 ,should = require('should')
 ,config = require('./fixtures/config')
 ,appLocal
-,appRemote
-,siprequest ;
+,appRemote;
 
 
 describe('custom headers', function() {
@@ -16,8 +15,6 @@ describe('custom headers', function() {
        appRemote = require('../../examples/custom-headers/app') ;
         appRemote.on('connect', function() {
             appLocal = require('../..')() ;
-            siprequest = appLocal.uac ;
-
             appLocal.connect(config.connect_opts, function(err){
                 done() ;
             });        
@@ -30,7 +27,7 @@ describe('custom headers', function() {
     }) ;
  
     it('must be able to set a new header', function(done) {
-        siprequest.options(config.request_uri, function( err, req, res ) {
+        appLocal.siprequest.options(config.request_uri, function( err, req, res ) {
             should.not.exist(err) ;
             res.should.have.property('statusCode',200); 
             res.headers.should.have.property('X-custom','drachtio rocks!') ;
@@ -41,7 +38,7 @@ describe('custom headers', function() {
     }) ;
 
     it('must be able to set a well-known header', function(done) {
-        siprequest.message(config.request_uri, function( err, req, res ) {
+        appLocal.siprequest.message(config.request_uri, function( err, req, res ) {
             should.not.exist(err) ;
             res.should.have.property('statusCode',200); 
             res.headers.subject.should.have.length(1) ;

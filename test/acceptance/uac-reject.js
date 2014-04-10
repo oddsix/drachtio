@@ -16,7 +16,7 @@ describe('reject invites', function() {
             appLocal = require('../..')() ;
  
             appLocal.connect(config.connect_opts, function(err){
-                appLocal.uac(config.request_uri, {
+                appLocal.siprequest(config.request_uri, {
                      body: config.sdp
                 }, function( err, req, res ) {
                     should.not.exist(err) ;
@@ -46,7 +46,7 @@ describe('reject invites', function() {
             appLocal = require('../..')() ;
  
             appLocal.connect(config.connect_opts, function(err){
-                appLocal.uac(config.request_uri, {
+                appLocal.siprequest(config.request_uri, {
                      body: config.sdp
                 }, function( err, req, res ) {
                     should.not.exist(err) ;

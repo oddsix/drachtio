@@ -6,8 +6,7 @@ var appRemote
 ,config = require('./fixtures/config')
 ,async = require('async')
 ,appLocal
-,appRemote
-,siprequest ;
+,appRemote;
 
 describe('100rel', function() {
 
@@ -15,8 +14,6 @@ describe('100rel', function() {
        appRemote = require('../../examples/uas-provisional/app') ;
         appRemote.on('connect', function() {
             appLocal = require('../..')() ;
-            siprequest = appLocal.uac ;
-
             appLocal.connect(config.connect_opts, function(err){
                 done() ;
             });        
@@ -33,7 +30,7 @@ describe('100rel', function() {
         var i = 0 ;
         async.parallel([
             function local( callback ){ 
-                siprequest(config.request_uri, {
+                appLocal.siprequest(config.request_uri, {
                     headers: {
                         require:'100rel'
                         ,supported: '100rel'
@@ -53,7 +50,7 @@ describe('100rel', function() {
                     res.headers.should.have.property('content-length') ;
 
                     setTimeout( function() {
-                        siprequest.bye({headers:{'call-id': res.get('call-id')}}, function() {
+                        appLocal.siprequest.bye({headers:{'call-id': res.get('call-id')}}, function() {
                             callback() ;
                         }) ;                       
                     }, 100);

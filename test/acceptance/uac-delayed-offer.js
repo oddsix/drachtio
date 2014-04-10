@@ -6,8 +6,7 @@ var appRemote
 ,config = require('./fixtures/config')
 ,async = require('async')
 ,appLocal
-,appRemote
-,siprequest ;
+,appRemote;
 
 describe('delayed sdp offer', function() {
     this.timeout(4000) ;
@@ -15,9 +14,7 @@ describe('delayed sdp offer', function() {
        appRemote = require('../../examples/uas-delayed-offer/app') ;
         appRemote.on('connect', function() {
             appLocal = require('../..')() ;
-            siprequest = appLocal.uac ;
-
-            appLocal.connect(config.connect_opts, function(err){
+             appLocal.connect(config.connect_opts, function(err){
                 done() ;
             });        
         }) ;
@@ -33,7 +30,7 @@ describe('delayed sdp offer', function() {
         var sdpOffer ;
         async.parallel([
             function local( callback ){ 
-                siprequest(config.request_uri
+                appLocal.siprequest(config.request_uri
                 ,function( err, req, res ) {
                     should.not.exist(err) ;
                     res.should.have.property('statusCode',200); 
@@ -45,7 +42,7 @@ describe('delayed sdp offer', function() {
                     res.ack( {body: config.sdp} ) ;
 
                     setTimeout( function() {
-                        siprequest.bye({headers:{'call-id': res.get('call-id')}}, function() {
+                        appLocal.siprequest.bye({headers:{'call-id': res.get('call-id')}}, function() {
                             callback() ;
                         }) ;                       
                     }, 100);
