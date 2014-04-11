@@ -32,10 +32,11 @@ app.bye(function(req, res){
     if( uacCallid === req.get('call-id') ) otherCallid = uasCallid ;
     else otherCallid = uacCallid ;
 
-    bye({headers: {'call-id': otherCallid}}) ;
+    bye({headers: {'call-id': otherCallid}}, function(err, req, res){
+        //for test harness in test/acceptance/b2bua.js
+        app.emit('status', {success: true}) ;        
+    }) ;
 
-    //for test harness in test/acceptance/simple-b2bua.js
-    app.emit('status', {success: true}) ;
  }) ;
 
 
