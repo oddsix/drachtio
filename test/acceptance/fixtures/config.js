@@ -1,10 +1,15 @@
 module.exports =  {
 	request_uri: 'sip:1234@127.0.0.1:5061'
-	,connect_opts: {
-		host: 'localhost'
-		,port: 8022
-		,secret: 'cymru'		
-	}
+        ,connect_opts: {
+                host: 'localhost'
+                ,port: 8022
+                ,secret: 'cymru'                
+        }
+        ,connect_opts2: {
+                host: 'localhost'
+                ,port: 8024
+                ,secret: 'cymru'                
+        }
 	,sdp: 'v=0\n' +
         'o=- 1385064302543926 1 IN IP4 127.0.0.1\n' + 
         's=Bria 3 release 3.5.5 stamp 71243\n' + 
