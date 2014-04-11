@@ -6,11 +6,18 @@ var appRemote
 ,appRemote 
 ,appRemote2 ;
 
-//simple uas on the other side of the b2bua
+function cleanup(done) {
+    setTimeout( function() {
+        appLocal.disconnect() ;
+        appRemote.disconnect() ;
+        appRemote2.disconnect() ;
+        done() ;        
+    }, 75) ;
+}
 
-describe.only('b2bua', function() {
+describe('b2bua', function() {
 
-    it('must allow b2bua without use of Request#pipe', function(done) {
+    it.skip('must allow b2bua without use of Request#pipe', function(done) {
 
         appLocal = require('../..')() ;
         appRemote = require('../../examples/b2bua/app') ;
@@ -44,21 +51,14 @@ describe.only('b2bua', function() {
 
             appRemote.on('status', function(status){
                 status.success.should.be.ok ;
-                cleanup();
+                cleanup(done);
             }) ;  
-        }
-
-        function cleanup() {
-            appLocal.disconnect() ;
-            appRemote.disconnect() ;
-            appRemote2.disconnect() ;
-            done() ;
         }
     }) ;
 
-   it.skip('must allow b2bua with Request#pipe', function(done) {
+   it('must allow b2bua with Request#pipe', function(done) {
 
-        this.timeout(120000) ;
+        //this.timeout(120000) ;
 
         appLocal = require('../..')() ;
         appRemote = require('../../examples/b2bua-pipe/app') ;
@@ -92,15 +92,8 @@ describe.only('b2bua', function() {
 
             appRemote.on('status', function(status){
                 status.success.should.be.ok ;
-                cleanup();
+                cleanup(done);
             }) ;  
-        }
-
-        function cleanup() {
-            appLocal.disconnect() ;
-            appRemote.disconnect() ;
-            appRemote2.disconnect() ;
-            done() ;
         }
     }) ;
 

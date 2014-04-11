@@ -16,9 +16,9 @@ app.invite( function(req, res) {
 		body: req.body
 	}) ;
 
-    debugger ;
-    request.pipe( res, function( ack ){
-        debug('pipe returned with args, ', arguments);
+    request.pipe( res, function( uacRes ){
+        debug('pipe returned with final response status %d on uac call leg %s', uacRes.statusCode, uacRes.get('call-id'));
+        uacCallid = uacRes.get('call-id') ;
     })
 }) ;
 
