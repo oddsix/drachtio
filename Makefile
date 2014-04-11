@@ -5,6 +5,6 @@ REPORTER = spec
 check: test
 
 test: 
-	@NODE_ENV=test ./node_modules/.bin/mocha --reporter $(REPORTER) ./test/acceptance
+	@NODE_ENV=test ./node_modules/.bin/mocha --reporter $(REPORTER) $(MOCHA_OPTS) ./test/acceptance
 
 .PHONY: test 

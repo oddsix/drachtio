@@ -7,12 +7,10 @@ var appRemote
 ,appRemote2 ;
 
 function cleanup(done) {
-    setTimeout( function() {
-        appLocal.disconnect() ;
-        appRemote.disconnect() ;
-        appRemote2.disconnect() ;
-        done() ;        
-    }, 75) ;
+    appLocal.disconnect() ;
+    appRemote.disconnect() ;
+    appRemote2.disconnect() ;
+    done() ;        
 }
 
 describe('b2bua', function() {
@@ -45,9 +43,8 @@ describe('b2bua', function() {
 
                 setTimeout( function() {
                     appLocal.siprequest.bye({headers:{'call-id': res.get('call-id')}}) ;                       
-                }, 500);
-            }
-            );
+                }, 100);
+            });
 
             appRemote.on('status', function(status){
                 status.success.should.be.ok ;
@@ -86,9 +83,8 @@ describe('b2bua', function() {
 
                 setTimeout( function() {
                     appLocal.siprequest.bye({headers:{'call-id': res.get('call-id')}}) ;                       
-                }, 500);
-            }
-            );
+                }, 100);
+            });
 
             appRemote.on('status', function(status){
                 status.success.should.be.ok ;
