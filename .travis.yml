@@ -1,3 +1,13 @@
 language: node_js
 node_js:
   - "0.10"
+
+before_install:
+	- git clone https://github.com/davehorton/drachtio-server
+	- cd drachtio-server
+	- autoreconf -fvi 
+	- mkdir build 
+	- cd build 
+	- ../configure 
+	- make
+	- sudo make install
