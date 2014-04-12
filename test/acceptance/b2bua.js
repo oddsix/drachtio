@@ -16,7 +16,7 @@ function cleanup(done) {
 describe('b2bua', function() {
 
     it('must allow b2bua without use of Request#pipe', function(done) {
-        this.timeout(5000) ;
+        this.timeout(10000) ;
         appLocal = require('../..')() ;
         appRemote = require('../../examples/b2bua/app') ;
         appRemote2 = require('../..')() ;

@@ -1,6 +1,6 @@
 
 MOCHA_OPTS= --check-leaks --bail
-REPORTER = spec
+REPORTER = dot
 
 check: test
 
