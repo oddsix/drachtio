@@ -5,6 +5,6 @@ REPORTER = dot
 check: test
 
 test: 
-	@NODE_ENV=test ./node_modules/.bin/mocha --reporter $(REPORTER) $(MOCHA_OPTS) ./test/acceptance
+	@NODE_ENV=test, DEBUG=* ./node_modules/.bin/mocha --reporter $(REPORTER) $(MOCHA_OPTS) ./test/acceptance
 
 .PHONY: test 
