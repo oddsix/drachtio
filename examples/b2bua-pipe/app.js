@@ -29,7 +29,9 @@ app.bye(function(req, res){
     if( uacCallid === req.get('call-id') ) otherCallid = uasCallid ;
     else otherCallid = uacCallid ;
 
-    bye({headers: {'call-id': otherCallid}}, function(err, req, res){
+    console.log('b2bua sending BYE') ;
+    bye({headers: {'call-id': otherCallid}}, function(err, req, res) {
+        console.log('b2bua got response to BYE, emitting status event')
         //for test harness in test/acceptance/b2bua.js
         app.emit('status', {success: true}) ;        
     }) ;
