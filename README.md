@@ -152,17 +152,17 @@ In many cases, the application will want to populate a calling party number in t
 Furthermore, since the ip address part of the From header should be the host address of the drachtio server, the application can simply substitute the 'localhost' in the ip address part of the SIP URL for the From header, and drachtio-server will replace it with the correct address before sending.
 
 ```js
-    app.siprequest('sip:1234@192.168.173.139', {
-        headers:
-            {from: '8005551212'}
-    }, function( err, req, res ) {...}) ;
+app.siprequest('sip:1234@192.168.173.139', {
+    headers:
+        {from: '8005551212'}
+}, function( err, req, res ) {...}) ;
 
 //or
 
-    app.siprequest('sip:1234@192.168.173.139', {
-        headers:
-            {from: '"Dave H "<sip:8005551212@localhost>'}
-    }, function( err, req, res ) {...}) ;
+app.siprequest('sip:1234@192.168.173.139', {
+    headers:
+        {from: '"Dave H" <sip:8005551212@localhost>'}
+}, function( err, req, res ) {...}) ;
 ```
 > The same convenience is available for the P-Asserted-Identity, P-Charge-Info, and P-Preferred-Identity headers
 
@@ -171,23 +171,23 @@ Furthermore, since the ip address part of the From header should be the host add
 To cancel a sip INVITE that has been sent by the application, use the `cancel` method on the request object that is returned from the `uac` method, as shown below.
 
 ```js
-    var r = appLocal.siprequest(config.request_uri, {
-        body: config.sdp
-    }, function( err, req, res ) {
-        should.not.exist(err) ;
-        res.should.have.property('statusCode', i++ === 0 ? 180 : 487); 
+var r = appLocal.siprequest(config.request_uri, {
+    body: config.sdp
+}, function( err, req, res ) {
+    should.not.exist(err) ;
+    res.should.have.property('statusCode', i++ === 0 ? 180 : 487); 
 
-        if( res.statusCode === 180 ) return ;
+    if( res.statusCode === 180 ) return ;
 
-        res.ack() ;
+    res.ack() ;
 
-        appLocal.idle.should.be.true ;
-        appRemote.idle.should.be.true ;
-        done() ;
-    }) ;
+    appLocal.idle.should.be.true ;
+    appRemote.idle.should.be.true ;
+    done() ;
+}) ;
 
-    setTimeout( function() {
-        r.cancel() ;
+setTimeout( function() {
+    r.cancel() ;
 ```
 
 On the other hand, when receiving an INVITE request, the application can check `req.active` to determine whether or not the INVITE request has been canceled by the sender (in which case, `req.active` will be `false`).  
@@ -222,56 +222,60 @@ app.invite(function(req, res) {
 Responding to a SIP INVITE with a reliable provisional response is easy: just add a `Require: 100rel` header to the INVITE request and drachtio-server will handle that for you.  However, after sending a response reliably, your app should wait for the PRACK to be received before sending the final response.  This can be done by providing a handler for the `req.prack` method.
 
 ```js
-    app.invite(function(req, res) {
-        res.send( 183,{
-            headers: {
-                require: '100rel'
-                ,supported: '100rel'
-            }
-            ,body: config.sdp
-        }) ;
-
-        req.prack( function(prack) {
-            // send final response now that we have received PRACK
-            res.send( 200, {body: config.sdp} ) ;
-        }) ;
+app.invite(function(req, res) {
+    res.send( 183,{
+        headers: {
+            require: '100rel'
+            ,supported: '100rel'
+        }
+        ,body: config.sdp
     }) ;
+
+    req.prack( function(prack) {
+        // send final response now that we have received PRACK
+        res.send( 200, {body: config.sdp} ) ;
+    }) ;
+}) ;
 ```
 
 > Note that if you want to use reliable provisional responses if the remote side supports them, but establish the call without them if the remote side does not support it, then include a `Supported` header but do not include a `Require` header.
 
 Similiarly, if you want to send reliable provisional responses, just add a `Require: 100rel` header in your response, and drachtio-server will handle sending reliable provisional response for you.  
 
-```
-
-## Back-to-back user agent (B2BUA)
+### Back-to-back user agent (B2BUA)
 A B2BUA is a common sip pattern, where a sip application acts as both a User agent client (UAC) and a User agent server (UAS).  The application receives a sip INVITE (acting as an UAS) and then turns around and generates a new INVITE that offers the same session description protocol being offered in the incoming INVITE.  Most sip applications are written as a B2BUA because it offers a great degree of control over each SIP call leg.
 
 Creating a B2BUA is easy: in your `app.invite` handler, simply generate a sip request as shown above, and pipe the resulting object back into the response.
 
 ```js
-app.invite(function(req, res) {
-    var b2bua = siprequest( 'sip:209.251.49.158', {
-        headers:{
-            'content-type': 'application/sdp'
-        }
-        ,body: req.body
-    }).pipe( res ) ;
-
-    b2bua.on('fail', function(status) {
-        debug('b2bua failed with status: ', status) ;
-    }) 
-    .on('success', function() {
-        debug('b2bua connected successfully') ;
+app.invite( function(req, res) {
+    var request = app.siprequest( config.remote_uri2, {
+        body: req.body
+    })
+    .pipe( res, function( uacRes ){
+        debug('pipe returned with final response status %d on uac call leg %s', uacRes.statusCode, uacRes.get('call-id'));
     }) ;
 }) ;
 ```
 
-> In the case of failure on the outbound INVITE, the callback is passed an object 
-> representing the SIP status line on the response to that INVITE, e.g
->        { phrase: 'Not Implemented', status: 501, version: 'SIP/2.0' }
+> Note that the callback function passed to pipe will receive the final response object on the B leg
 
-## Middleware
+Note that the above can also be accomplished without using the pipe method as shown below:
+```js
+app.invite( function(req, res) {
+    invite( config.remote_uri2, {
+        body: req.body
+    }, function( err, uacReq, uacRes ) {
+        assert(!err) ;
+
+        res.send( uacRes.statusCode, {
+            body: uacRes.body
+        }) ;
+        if( uacRes.statusCode >= 200 ) uacRes.ack() ;               
+    }) ;
+}) ;
+```
+### Middleware
 
 
 Express-style middleware can be used to intercept and filter messages.  Middleware is installed using the 'use' method of the app object, as we have seen earlier with the app.router middleware, which must always be installed in order to access the app[verb] methods.  

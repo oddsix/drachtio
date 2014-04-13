@@ -2,6 +2,8 @@ cd /tmp
 cp /etc/rsyslog.conf .
 sudo echo '$ModLoad imudp' >> rsyslog.conf
 sudo echo '$UDPServerRun 514' >> rsyslog.conf
+sudo echo '$MaxMessageSize 64k' >> rsyslog.conf
+sudo echo '$EscapeControlCharactersOnReceive off' >> rsyslog.conf
 sudo echo 'local7.*    /var/log/drachtio.log' >> rsyslog.conf
 sudo echo 'local6.*    /var/log/drachtio2.log' >> rsyslog.conf
 sudo echo 'local5.*    /var/log/drachtio3.log' >> rsyslog.conf
