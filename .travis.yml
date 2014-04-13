@@ -13,3 +13,11 @@ before_install:
  - make
  - sudo make install
  - cd ../../drachtio
+
+ after_script:
+ - cd /var/log
+ - ls -lrt
+ - sudo service syslog status
+ - sudo service rsyslog status
+ - cat /etc/syslog.conf 
+ - cat /etc/rsyslog.conf 
