@@ -2,5 +2,5 @@ echo "log drachio.log"
 sudo cat /var/log/drachtio.log
 echo "log drachio2.log"
 sudo cat /var/log/drachtio2.log
-echo "log drachio2.log"
+echo "log drachio3.log"
 sudo cat /var/log/drachtio3.log
