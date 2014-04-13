@@ -3,12 +3,11 @@ node_js:
   - "0.10"
 
 before_install:
- - sudo echo "#drachtio adds start here" >> /etc/rsyslog.conf
- - sudo echo "$ModLoad imudp" >> /etc/rsyslog.conf
- - sudo echo "$UDPServerRun 514" >> /etc/rsyslog.conf
- - sudo echo "local7.*    /var/log/drachtio.log"
- - sudo echo "local6.*    /var/log/drachtio2.log"
- - sudo echo "local5.*    /var/log/drachtio3.log"
+ - sudo echo '$ModLoad imudp' >> /etc/rsyslog.conf
+ - sudo echo '$UDPServerRun 514' >> /etc/rsyslog.conf
+ - sudo echo 'local7.*    /var/log/drachtio.log' >> /etc/rsyslog.conf
+ - sudo echo 'local6.*    /var/log/drachtio2.log' >> /etc/rsyslog.conf
+ - sudo echo 'local5.*    /var/log/drachtio3.log' >> /etc/rsyslog.conf
  - cat /etc/rsyslog.conf 
  - sudo service rsyslog restart
  - cd ..
