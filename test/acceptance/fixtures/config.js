@@ -1,12 +1,12 @@
 module.exports =  {
 	request_uri: 'sip:1234@127.0.0.1:5061'
         ,connect_opts: {
-                host: 'localhost'
+                host: '127.0.0.1'
                 ,port: 8022
                 ,secret: 'cymru'                
         }
         ,connect_opts2: {
-                host: 'localhost'
+                host: '127.0.0.1'
                 ,port: 8024
                 ,secret: 'cymru'                
         }
