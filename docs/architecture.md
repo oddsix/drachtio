@@ -1,10 +1,10 @@
-# Drachtio architecture
+# dracht.io architecture
 
-Drachtio is designed to make it easy for developers to integrate Voice-over IP (VoIP) features into their web applications; or, alternatively, to simply build full-on next generation VoIP applications without a traditional web (i.e. http) facade.  It couples an easy-to-use [express](http://expressjs.com/)-style web application framework with a high-performance [SIP](http://www.ietf.org/rfc/rfc3261.txt) processing engine that is built on the [sofia SIP stack](https://gitorious.org/sofia-sip).  
+dracht.io is designed to make it easy for developers to integrate Voice-over IP (VoIP) features into their web applications; or, alternatively, to simply build full-on next generation VoIP applications without a traditional web (i.e. http) facade.  It couples an easy-to-use [express](http://expressjs.com/)-style web application framework with a high-performance [SIP](http://www.ietf.org/rfc/rfc3261.txt) processing engine that is built on the [sofia SIP stack](https://gitorious.org/sofia-sip).  
 
-Drachtio consists of a client and a server component.  The server component is [drachtio-server](https://github.com/davehorton/drachtio-server) - a minimal, high-performance sip agent process which contains no application logic, but provides a SIP endpoint that can be controlled by clients that exchange [JSON](http://www.json.org) messages with the server over a TCP network connection.  The drachtio-server is written in C++ and designed to run as a daemon process, which may be remote or co-located with a drachtio application.
+dracht.io consists of a client and a server component.  The server component is [drachtio-server](https://github.com/davehorton/drachtio-server) - a minimal, high-performance sip agent process which contains no application logic, but provides a SIP endpoint that can be controlled by clients that exchange [JSON](http://www.json.org) messages with the server over a TCP network connection.  The drachtio-server is written in C++ and designed to run as a daemon process, which may be remote or co-located with a drachtio application.
 
-The client component is drachtio (i.e., this project), which is a node.js module that enables node applications to receive or make SIP calls, handle SIP registrations, and perform any other type of SIP call control by connecting to a [drachtio-server](https://github.com/davehorton/drachtio-server) instance.  
+The client component is drachtio, which is a node.js module that enables node applications to receive or make SIP calls, handle SIP registrations, and perform any other type of SIP call control by connecting to a [drachtio-server](https://github.com/davehorton/drachtio-server) instance.  
 
 ![drachtio architecture](http://www.dracht.io/images/drachtio-architecture.png)
 
@@ -18,10 +18,7 @@ When a drachtio application establishes a connection to a drachtio-server instan
 
 ## Middleware architecture
 
-Drachtio uses the concept of middleware to process incoming SIP messages.  The middleware consists of a layered sequence of javascript functions set up as a filter chain, where each function can optionally process or modify the request before passing it up to the next layer.  Each middleware function receives javascript objects representing the SIP request and response messages, as well as a `next` function to call to pass control up to the next level.
-
-Middleware is installed by the `use` function on the app object.  The only middleware that *must* be installed by an application is `app.router`; this piece of middleware enables the `app[verb]` callback functions that provide the main means for processing incoming sip requests.
-> app.router also handles incoming responses to sip requests sent by an application, so even an application that is only sends sip requests needs to install this middleware.  
+Drachtio uses the concept of middleware to process incoming SIP messages.  The middleware consists of a layered sequence of javascript functions set up as a filter chain, where each function can optionally process or modify the request before passing it up to the next layer.  Each middleware function receives javascript objects representing the SIP request and response messages, as well as a `next` function to call to pass control up to the next level.  Middleware is installed by the `use` function on the app object.  
 
 An example middleware is shown below, which rejects all incoming SIP register messages that don't have an Authorization header
 
@@ -39,7 +36,6 @@ app.use('register', function( req, res, next ) {
 	if( !req.get('authorization') ) return res.send(401) ;
 	next() ;
 }) ;
-app.use( app.router ) ;
 
 app.register( function(req, res) {
 	//if we got here, we know we have an Authorization header
@@ -48,7 +44,7 @@ app.register( function(req, res) {
 ```
 
 ## Low-level SIP control
-drachtio provides the means to send and receive individual SIP messages.  Working at this level, messages are received using the `app[verb]` functions, and are sent using the `app.uac` function.  An application can set the values of individual SIP headers - including custom headers -- on any SIP message that is sent.  This offers extensive control over the SIP signaling although it does require a degree of knowledge of SIP.
+drachtio provides the means to send and receive individual SIP messages.  Working at this level, messages are received using the `app[verb]` functions, and are sent using the `app.siprequest` function.  An application can set the values of individual SIP headers - including custom headers -- on any SIP message that is sent.  This offers extensive control over the SIP signaling although it does require a degree of knowledge of SIP.
 
 The example below shows a simple app that responds to a SIP invite request by sending a 200 OK, and later also responds to a bye with a 200 OK.
 ```js
@@ -60,8 +56,6 @@ app.connect({
     ,port: 8022
     ,secret: 'cymru'
 }) ;
-
-app.use( app.router ) ;
 
 app.invite(function(req, res) {
 
@@ -77,6 +71,8 @@ app.bye( function( req, res){
 	res.send( 200 ); 
 })
 ```
+### Session-stateful applications
+
 ## Higher level abstraction - SIP Dialogs
 One of the features that a middleware-based architecture offers is the ability to easily add higher levels of programming abstractions.  drachtio includes optional middleware support for Sip dialogs.  drachtio exposes a Dialog object which represents a SIP call leg and provides methods for controlling the call leg.  The dialog middleware also emits dialog-related events (via the `app` object).  The above example could be written as follows using SIP dialog middleware:
 ```js

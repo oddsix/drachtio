@@ -33,7 +33,6 @@ The dracht.io architecture currently consists of the following components:
 + [drachtio-dialog](https://github.com/davehorton/drachtio-dialog) - A higher-level framework that introduces the concept of SIP dialogs and simplifies some aspects of application development
 + [drachtio-msml](https://github.com/davehorton/drachtio-msml) - A library that provides the ability to control IP media servers using [Media Server Markup Language](http://tools.ietf.org/html/rfc5707)
 
-More information about the drachtio architecture can be found [here](docs/architecture.md)
 ## Getting started
 ### Creating an application
 The first thing an application must do is to require the drachtio library and invoke the returned function to create an application.  The application instance that is created is an EventEmitter.
@@ -313,8 +312,8 @@ app.invite(function(req, res) {
 
 ## Additional Documentation
 
-- [Architecture overview](docs/architecture.md)
-- [API](docs/api.md)
+- [drachtio-session](https://github.com/davehorton/drachtio-session)
+- [drachtio-dialog](https://github.com/davehorton/drachtio-dialog)
 - [drachtio-msml](https://github.com/davehorton/drachtio-msml)
 - [drachtio-middleware](https://github.com/davehorton/drachtio-middleware)
 - [drachtio-redis](https://github.com/davehorton/drachtio-redis)
