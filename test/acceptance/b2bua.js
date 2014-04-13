@@ -21,18 +21,17 @@ describe('b2bua', function() {
         appRemote = require('../../examples/b2bua/app') ;
         appRemote2 = require('../..')() ;
 
-        appRemote2.connect(config.connect_opts2) ;
 
-        appRemote.on('connect', function(obj) {
-            appRemote2.on('connect', function(){
-                appRemote2.invite(function(req, res){
-                    res.send(200, {body: config.sdp}) ;
-                }) ;
-                appLocal.connect(config.connect_opts, function(obj){
-                    runTest();
-                });                       
+        appRemote2.on('connect', function(){
+            appRemote2.invite(function(req, res){
+                res.send(200, {body: config.sdp}) ;
             }) ;
+            appLocal.connect(config.connect_opts, function(obj){
+                runTest();
+            });                       
         }) ;
+
+        appRemote2.connect(config.connect_opts2) ;
 
         function runTest() {
             appLocal.siprequest(config.request_uri, {
