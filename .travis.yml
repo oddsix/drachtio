@@ -3,6 +3,14 @@ node_js:
   - "0.10"
 
 before_install:
+ - sudo echo "#drachtio adds start here" >> /etc/rsyslog.conf
+ - sudo echo "$ModLoad imudp" >> /etc/rsyslog.conf
+ - sudo echo "$UDPServerRun 514" >> /etc/rsyslog.conf
+ - sudo echo "local7.*    /var/log/drachtio.log"
+ - sudo echo "local6.*    /var/log/drachtio2.log"
+ - sudo echo "local5.*    /var/log/drachtio3.log"
+ - cat /etc/rsyslog.conf 
+ - sudo service rsyslog restart
  - cd ..
  - git clone https://github.com/davehorton/drachtio-server
  - cd drachtio-server
@@ -17,7 +25,6 @@ before_install:
 after_script:
  - cd /var/log
  - ls -lrt
- - sudo service syslog status
- - sudo service rsyslog status
- - cat /etc/syslog.conf 
- - cat /etc/rsyslog.conf 
+ - sudo cat drachtio.log
+ - sudo cat drachtio2.log
+ - sudo cat drachtio3.log
