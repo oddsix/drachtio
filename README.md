@@ -8,17 +8,13 @@
 
 [![drachtio logo](http://www.dracht.io/images/definition_only-cropped.png)](http://dracht.io/)
 
-drachtio is an [express](http://expressjs.com/)-style application framework designed to let developers easily integrate [SIP](http://www.ietf.org/rfc/rfc3261.txt) call and media processing features into their applications.  It acts as a client to the [drachtio-server](https://github.com/davehorton/drachtio-server) server platform, and offers middleware and other features that make it easy to integrate VoIP into web applications. 
-
-With drachtio as the core middleware-enabling framework, other projects like [drachtio-msml](https://github.com/davehorton/drachtio-msml) (and others to come!) can add in even *more* VoIP goodness for developers!.
+drachtio is an [express](http://expressjs.com/)-inspired application framework that designed to let node.js developers easily integrate [SIP](http://www.ietf.org/rfc/rfc3261.txt) call and media processing features into their applications using familiar middleware patterns. 
 
 ```js
 var drachtio = require('drachtio') ;
 var app = drachtio() ;
 
-app.connect({host:'localhost', port: 8022, secret: 'cymru'}) ;
-
-app.use( app.router ) ;
+app.connect({host:'localhost', port: 8022, secret: 'cymru', appName:'my simple app'}) ;
 
 app.invite( function( req, res ) {
     res.send(486, {
@@ -28,6 +24,15 @@ app.invite( function( req, res ) {
     }) ;
 }) ;
 ```
+drachtio is both the core middleware library, as well as an overall architecture consisting of the following components:
+
++ [drachtio-server](https://github.com/davehorton/drachtio-server)
++ [drachtio](https://github.com/davehorton/drachtio)
++ [drachtio-session](https://github.com/davehorton/drachtio-session)
++ [drachtio-redis](https://github.com/davehorton/drachtio-redis)
++ [drachtio-dialog](https://github.com/davehorton/drachtio-dialog)
++ [drachtio-msml](https://github.com/davehorton/drachtio-msml)
+
 More information about the drachtio architecture can be found [here](docs/architecture.md)
 ## Connecting to the server
 
