@@ -1,5 +1,3 @@
-cd /var/log
-ls -lrt
-sudo cat drachtio.log
-sudo cat drachtio2.log
-sudo cat drachtio3.log
+sudo cat /var/log/drachtio.log
+sudo cat /var/log/drachtio2.log
+sudo cat /var/log/drachtio3.log

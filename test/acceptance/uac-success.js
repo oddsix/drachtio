@@ -9,7 +9,7 @@ var appRemote
 ,appRemote
 ,siprequest ;
 
-describe.only('accept invites', function() {
+describe('accept invites', function() {
     this.timeout(4000) ;
     before(function(done){
        appRemote = require('../../examples/uas-success/app') ;
