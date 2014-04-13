@@ -8,7 +8,7 @@
 
 [![drachtio logo](http://www.dracht.io/images/definition_only-cropped.png)](http://dracht.io/)
 
-drachtio is an [express](http://expressjs.com/)-inspired application framework that designed to let node.js developers easily integrate [SIP](http://www.ietf.org/rfc/rfc3261.txt) call and media processing features into their applications using familiar middleware patterns. 
+dracht.io is an [express](http://expressjs.com/)-inspired application framework that designed to let node.js developers easily integrate [SIP](http://www.ietf.org/rfc/rfc3261.txt) call and media processing features into their applications using familiar middleware patterns. 
 
 ```js
 var drachtio = require('drachtio') ;
@@ -24,18 +24,26 @@ app.invite( function( req, res ) {
     }) ;
 }) ;
 ```
-drachtio is both the core middleware library, as well as an overall architecture consisting of the following components:
+The dracht.io architecture currently consists of the following components:
 
-+ [drachtio-server](https://github.com/davehorton/drachtio-server)
-+ [drachtio](https://github.com/davehorton/drachtio)
-+ [drachtio-session](https://github.com/davehorton/drachtio-session)
-+ [drachtio-redis](https://github.com/davehorton/drachtio-redis)
-+ [drachtio-dialog](https://github.com/davehorton/drachtio-dialog)
-+ [drachtio-msml](https://github.com/davehorton/drachtio-msml)
++ [drachtio-server](https://github.com/davehorton/drachtio-server) - A C++ SIP user agent that is controlled by drachtio clients over a TCP/JSON interface
++ [drachtio](https://github.com/davehorton/drachtio) - The core SIP middleware exposed to applications, providing the ability to build both SIP user agent client (UAC) and user agent server (UAS) applications
++ [drachtio-session](https://github.com/davehorton/drachtio-session) - Adds support for stateful SIP applications as well as resiliency/horizontal scaling of drachtio applications
++ [drachtio-redis](https://github.com/davehorton/drachtio-redis) - A redis client for storing session data
++ [drachtio-dialog](https://github.com/davehorton/drachtio-dialog) - A higher-level framework that introduces the concept of SIP dialogs and simplifies some aspects of application development
++ [drachtio-msml](https://github.com/davehorton/drachtio-msml) - A library that provides the ability to control IP media servers using [Media Server Markup Language](http://tools.ietf.org/html/rfc5707)
 
 More information about the drachtio architecture can be found [here](docs/architecture.md)
-## Connecting to the server
-
+## Getting started
+### Creating an application
+The first thing an application must do is to require the drachtio library and invoke the returned function to create an application.  The application instance that is created is an EventEmitter.
+```js
+var drachtio = require('drachtio')
+,app = drachtio() ;
+```
+### Connecting to the server
+The next thing an application must do is to connect to the drachtio-server that will be providing the SIP endpoint. By default, 
+drachtio-server listens for TCP connections from clients on port 8022
 Since the sip transport is implemented by drachtio-server, a connection must be established to a drachtio-server in order to control the sip messaging.  The drachtio-server process listens by default on TCP port 8022 for connections from drachtio applications.
 
 ```js

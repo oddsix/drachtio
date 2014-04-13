@@ -13,7 +13,7 @@ function cleanup(done) {
     done() ;        
 }
 
-describe.skip('b2bua', function() {
+describe('b2bua', function() {
 
     it('must allow b2bua without use of Request#pipe', function(done) {
         this.timeout(10000) ;
