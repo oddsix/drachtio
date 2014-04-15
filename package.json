@@ -1,7 +1,7 @@
 {
   "name": "drachtio"
   ,"description": "express-style middleware for SIP telephony applications (http://www.ietf.org/rfc/rfc3261.txt)"
-  ,"version": "0.0.1"
+  ,"version": "0.0.5"
   ,"author": "Dave Horton <dave@dchorton.com>"
   ,"main": "./lib/drachtio.js"
   ,"dependencies": { 
